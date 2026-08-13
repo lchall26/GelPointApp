@@ -6,6 +6,8 @@ A Streamlit application for calculating polymer gel points from rheology data. S
 
 This tool analyzes TRIOS rheometry Excel files and determines the gel point by finding the crossover between storage modulus (G') and loss modulus (G'').
 
+Originally created as a streamlit app. Now functioning as js/css/html for better optimization and more consistent look.
+
 ## Features
 
 - Upload TRIOS Excel rheology files
@@ -13,6 +15,8 @@ This tool analyzes TRIOS rheometry Excel files and determines the gel point by f
 - Plot modulus vs dosage
 - Calculate gel point using interpolation
 - Export plots as PNG files
+
+- Plots are interactive in the updated js/css/html
 
 ## Requirements
 
