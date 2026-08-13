@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Gel Point Calculator</title>
+
+    <!-- Plotting -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <!-- Excel reader -->
+    <script src="
+    https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js">
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Adding Header-->
+    <header class="banner">
+        <picture>
+            <source srcset="ZAPLAB_header.webp" type="image/webp">
+            <img src="ZAPLAB_header.webp" alt="ZAP Lab">
+        </picture>
+    </header>
+
+
+    <!-- <h1>🧪 Gel Point Calculator</h1> -->
+    <header class="hero">
+        <h1>Gel Point Calculator</h1>
+        <!-- <p>A tool to plot TRIOS storage and loss modulus data, determine light dosage, and calculate both gel point time and dosage</p> -->
+        <p>A tool to plot TRIOS storage and loss modulus data, determine gel point, and provide a comparison</p>
+    </header>
+    <div class="tabs">
+        <button class="tab-button" onclick="openTab(event,'sample1')"> Sample 1 </button>
+        <button class="tab-button" onclick="openTab(event,'sample2')"> Sample 2 </button>
+        <button class="tab-button" onclick="openTab(event,'sample3')"> Sample 3 </button>
+        <button class="tab-button" onclick="openTab(event,'comparison')"> Comparison </button>
+    </div>
+
+    <!-- ========================= -->
+    <!-- SAMPLE 1 -->
+    <!-- ========================= -->
+    <div id="sample1" class="tab">
+        <div class="card">
+            <h3>Data Processing Inputs</h3>
+            <div class="input-row">
+                <input 
+                    type="file"
+                    id="file1"
+                    accept=".xls,.xlsx">
+            </div>
+            <!-- <br> -->
+
+            <div class="input-row">
+                <label>Sample Name (Optional)</label>
+                <input 
+                    id="sampleName1"
+                    type="text"
+                    value="Sample 1"
+                    onchange="updateSampleName(1)">
+            </div>
+
+            <div class="input-row">
+                <label>Light Intensity (mW/cm²)</label>
+                <input
+                    id="intensity1"
+                    type="number"
+                    value="5"
+                    onchange="resetSample(1)">
+            </div>
+            <div class="input-row">
+                <label>Reaction Start Delay (s)</label>
+                <input
+                    id="rxn1"
+                    type="number"
+                    value="10"
+                    onchange="resetSample(1)">
+            </div>
+           
+            <button class="action-button" onclick="loadSample(1)">Process Sample</button>
+            <div id="plots1"></div>
+
+            <!-- <details ontoggle="showTable(1)"> -->
+            <details id="dataDetails1" ontoggle="showTable(1)" style="display:none;">
+                <summary>Data</summary>
+                <div class="table-wrapper">
+                    <div id="tableContainer1"></div>
+                </div>
+            </details>
+
+            <!-- <details ontoggle="displayUnits(1)"> -->
+            <details id="unitsDetails1" ontoggle="displayUnits(1)" style="display:none;">
+                <summary>Units</summary>
+
+                <div class="table-wrapper">
+                    <div id="units1"></div>
+                </div>
+            </details>
+
+            <button 
+                id="exportButton1"
+                class="action-button" 
+                onclick="exportTable(1)"
+                style="display:none;">
+                Export Processed Data Table (with Dosage)
+            </button>
+
+        </div>
+
+        <div class="card">
+            <h3>Gel Point Calculation</h3>
+            <div class="input-row">
+                <label>Lower Bound (s)</label>
+                <input id="lower1">
+            </div>
+            <div class="input-row">
+                <label>Upper Bound (s)</label>
+                <input id="upper1">
+            </div>
+        
+            <button class="action-button" onclick="calculateGel(1)">Calculate Gel</button>
+            <div id="result1"></div>
+            <div id="gelPlot1"></div>
+        </div>
+    </div>
+
+
+
+<!-- ========================= -->
+<!-- SAMPLE 2 -->
+<!-- ========================= -->
+
+    <div id="sample2" class="tab">
+        <div class="card">
+            <h3>Data Processing Inputs</h3>
+            <div class="input-row">
+                <input 
+                    type="file"
+                    id="file2"
+                    accept=".xls,.xlsx">
+            </div>
+            <!-- <br> -->
+
+            <div class="input-row">
+                <label>Sample Name (Optional)</label>
+                <input 
+                    id="sampleName2"
+                    type="text"
+                    value="Sample 2"
+                    onchange="updateSampleName(2)">
+            </div>
+
+            <div class="input-row">
+                <label>Light Intensity (mW/cm²)</label>
+                <input
+                    id="intensity2"
+                    type="number"
+                    value="5"
+                    onchange="resetSample(2)">
+            </div>
+            <div class="input-row">
+                <label>Reaction Start Delay (s)</label>
+                <input
+                    id="rxn2"
+                    type="number"
+                    value="10"
+                    onchange="resetSample(2)">
+            </div>
+           
+            <button class="action-button" onclick="loadSample(2)">Process Sample</button>
+            <div id="plots2"></div>
+
+            <!-- <details ontoggle="showTable(2)"> -->
+            <details id="dataDetails2" ontoggle="showTable(2)" style="display:none;">
+                <summary>Data</summary>
+                <div class="table-wrapper">
+                    <div id="tableContainer2"></div>
+                </div>
+            </details>
+
+            <!-- <details ontoggle="displayUnits(2)"> -->
+            <details id="unitsDetails2" ontoggle="displayUnits(2)" style="display:none;">
+                <summary>Units</summary>
+
+                <div class="table-wrapper">
+                    <div id="units2"></div>
+                </div>
+            </details>
+
+            <button 
+                id="exportButton2"
+                class="action-button" 
+                onclick="exportTable(2)"
+                style="display:none;">
+                Export Processed Data Table (with Dosage)
+            </button>
+
+        </div>
+
+        <div class="card">
+            <h3>Gel Point Calculation</h3>
+            <div class="input-row">
+                <label>Lower Bound (s)</label>
+                <input id="lower2">
+            </div>
+            <div class="input-row">
+                <label>Upper Bound (s)</label>
+                <input id="upper2">
+            </div>
+        
+            <button class="action-button" onclick="calculateGel(2)">Calculate Gel</button>
+            <div id="result2"></div>
+            <div id="gelPlot2"></div>
+        </div>
+    </div>
+
+
+
+
+
+<!-- ========================= -->
+<!-- SAMPLE 3 -->
+<!-- ========================= -->
+<!-- PRETTY SURE I NEED TO UPDATE/FIX TO MATCH TAB 1-->
+
+    <div id="sample3" class="tab">
+        <div class="card">
+            <h3>Data Processing Inputs</h3>
+            <div class="input-row">
+                <input 
+                    type="file"
+                    id="file3"
+                    accept=".xls,.xlsx">
+            </div>
+            <!-- <br> -->
+
+            <div class="input-row">
+                <label>Sample Name (Optional)</label>
+                <input 
+                    id="sampleName3"
+                    type="text"
+                    value="Sample 3"
+                    onchange="updateSampleName(3)">
+            </div>
+
+            <div class="input-row">
+                <label>Light Intensity (mW/cm²)</label>
+                <input
+                    id="intensity3"
+                    type="number"
+                    value="5"
+                    onchange="resetSample(3)">
+            </div>
+            <div class="input-row">
+                <label>Reaction Start Delay (s)</label>
+                <input
+                    id="rxn3"
+                    type="number"
+                    value="10"
+                    onchange="resetSample(3)">
+            </div>
+           
+            <button class="action-button" onclick="loadSample(3)">Process Sample</button>
+            <div id="plots3"></div>
+
+            <!-- <details ontoggle="showTable(3)"> -->
+            <details id="dataDetails3" ontoggle="showTable(3)" style="display:none;">
+                <summary>Data</summary>
+                <div class="table-wrapper">
+                    <div id="tableContainer3"></div>
+                </div>
+            </details>
+
+            <!-- <details ontoggle="displayUnits(3)"> -->
+            <details id="unitsDetails3" ontoggle="displayUnits(3)" style="display:none;">
+                <summary>Units</summary>
+
+                <div class="table-wrapper">
+                    <div id="units3"></div>
+                </div>
+            </details>
+
+            <button 
+                id="exportButton3"
+                class="action-button" 
+                onclick="exportTable(3)"
+                style="display:none;">
+                Export Processed Data Table (with Dosage)
+            </button>
+
+        </div>
+
+        <div class="card">
+            <h3>Gel Point Calculation</h3>
+            <div class="input-row">
+                <label>Lower Bound (s)</label>
+                <input id="lower3">
+            </div>
+            <div class="input-row">
+                <label>Upper Bound (s)</label>
+                <input id="upper3">
+            </div>
+        
+            <button class="action-button" onclick="calculateGel(3)">Calculate Gel</button>
+            <div id="result3"></div>
+            <div id="gelPlot3"></div>
+        </div>
+    </div>
+
+
+
+<!-- ========================= -->
+<!-- COMPARISON -->
+<!-- ========================= -->
+
+    <div id="comparison" class="tab">
+        <!-- <h2>Comparison</h2> -->
+        <!-- <button onclick="createComparison()">Generate Comparison</button> -->
+        <div id="comparisonContainer"></div>
+        <div id="average"></div>
+
+        <div class="table-wrapper">
+            <table id="summaryTable">
+                <thead>
+                    <tr>
+                        <th>Sample</th>
+                        <th>Gel Time (s)</th>
+                        <th>Dosage (mJ/cm²)</th>
+                    </tr>
+                </thead>
+
+                <!-- <tbody>
+                    <tr>
+                        <td>Sample 1</td>
+                        <td id="gel1">-</td>
+                        <td id="dose1">-</td>
+                    </tr>
+
+                    <tr>
+                        <td>Sample 2</td>
+                        <td id="gel2">-</td>
+                        <td id="dose2">-</td>
+                    </tr>
+
+                    <tr>
+                        <td>Sample 3</td>
+                        <td id="gel3">-</td>
+                        <td id="dose3">-</td>
+                    </tr>
+
+                    <tr>
+                        <th>Average</th>
+                        <th id="avgGel">-</th>
+                        <th id="avgDose">-</th>
+                    </tr>
+                </tbody> -->
+                 <tbody id="summaryBody">
+                </tbody>
+            </table>
+        </div>
+        <button class="action-button" onclick="exportSummary()">
+            Export Gel Point Table
+        </button>
+
+    </div>
+    
+   
+    <section class= "acknowledgements">
+        <p>
+        Application developed by Lydia Hall in the ZAP Lab at the University of Texas at Austin
+        </p>
+    </section>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
