@@ -625,28 +625,6 @@ function createGelPointPlot(num,gelTime,gelDose){
 
     let gelModulus = linearInterpolation(gelAbsoluteTime,s.time,s.storage);
     let traces=[
-        {
-            x:[
-                Math.min(...s.time),
-                s.rxnStart,
-                s.rxnStart,
-                Math.min(...s.time)
-            ],
-            y:[
-                Math.min(...s.storage,...s.loss),
-                Math.min(...s.storage,...s.loss),
-                Math.max(...s.storage,...s.loss),
-                Math.max(...s.storage,...s.loss)
-            ],
-            mode:"none",
-            fill:"toself",
-            name:"No Light",
-            fillcolor:"rgba(128,128,128,0.2)",
-            line:{
-                width:0
-            },
-            showlegend:true
-        },
         {x:s.time,y:s.storage,mode:"markers",name:"G'"},
         {x:s.time,y:s.loss,mode:"markers",name:'G"'},
         {x:interpTime,y:interpStorage,mode:"lines",name:"G' interpolation",line:{dash:"dash"}},
@@ -664,6 +642,18 @@ function createGelPointPlot(num,gelTime,gelDose){
             type:"log",
             exponentformat:"power",
         },
+
+        shapes: [{
+            type: "rect",
+            x0:Math.min(...s.time),
+            x1:s.rxnStart,
+            y0:0,
+            y1:1,
+            yref:"paper",
+            fillcolor:"rgba(128,128,128,0.2)",
+            line: {width:0}
+        }],
+        
         legend:{
             orientation:"h",
             y:-0.25,
